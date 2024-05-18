@@ -6,7 +6,7 @@ import axios from 'axios';
 const SERVER_BASE_URL = process.env.REACT_APP_SERVER_BASE_URL;
 
 const UserList = () => {
-    const [users, setUsers] = useState([]);
+    const [users, setUsers] = useState(null);
 
     // Load users
     const loadUsers = async () => {
@@ -30,9 +30,11 @@ const UserList = () => {
             const url = `${SERVER_BASE_URL}/users/${id}`;
             const response = await axios.delete(url);
             if (response && response.status === 200) {
+                alert('User deleted successfully!');
                 loadUsers();
             } else {
                 console.error('Failed to delete user from server! Response:', response);
+                alert('Failed to delete user!');
             }
         } catch (error) {
             console.error('Failed to delete user:', error);
@@ -41,7 +43,9 @@ const UserList = () => {
 
     // Use effect hooks
     useEffect(() => {
-        loadUsers();
+        if (!users) {
+            loadUsers();
+        }
     }, []); // Run only once when the component is mounted
 
     return (
@@ -59,7 +63,7 @@ const UserList = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {users.map((user, index) => (
+                    {users && users.map((user, index) => (
                         <tr key={user.id} className={index % 2 === 0 ? 'even-row' : 'odd-row'}> {/* Apply even and odd row classes */}
                             <td>{user.name}</td>
                             <td>{user.email}</td>
