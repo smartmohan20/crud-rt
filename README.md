@@ -3,7 +3,7 @@ Explore the fundamentals of CRUD operations in React.js with this beginner-frien
 
 **Repo:** `crud-rt`
 
-Contribute to the robust backend of grocery management now!
+Level up your project with React CRUD capabilities!
 
 ## Documentation
 
