@@ -1,6 +1,6 @@
 import './App.css';
 import React from 'react';
-import { HashRouter as Router, Routes, Route, Outlet, useNavigate, Link } from 'react-router-dom';
+import { HashRouter as Router, Routes, Route } from 'react-router-dom';
 import UserList from './components/UserList';
 import AddUser from './components/AddUser';
 import EditUser from './components/EditUser';

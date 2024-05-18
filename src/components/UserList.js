@@ -49,7 +49,7 @@ const UserList = () => {
     }, []); // Run only once when the component is mounted
 
     return (
-        <div className="user-list"> {/* Add the user-list class */}
+        <div className="user-list">
             <h2>User List</h2>
             <Link to="/add">
                 <button className='add-user-btn'>Add User</button>
@@ -64,7 +64,7 @@ const UserList = () => {
                 </thead>
                 <tbody>
                     {users && users.map((user, index) => (
-                        <tr key={user.id} className={index % 2 === 0 ? 'even-row' : 'odd-row'}> {/* Apply even and odd row classes */}
+                        <tr key={user.id} className={index % 2 === 0 ? 'even-row' : 'odd-row'}>
                             <td>{user.name}</td>
                             <td>{user.email}</td>
                             <td>
