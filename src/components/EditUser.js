@@ -1,6 +1,6 @@
 import './AddEditUser.css';
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -8,6 +8,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 const SERVER_BASE_URL = process.env.REACT_APP_SERVER_BASE_URL;
 
 const AddUser = () => {
+    let { id } = useParams();
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
         name: '',
@@ -43,22 +44,52 @@ const AddUser = () => {
         try {
             e.preventDefault();
             let user = formData;
-            const url = `${SERVER_BASE_URL}/users`;
-            const response = await axios.post(url, user);
-            if (response.status === 201) {
-                alert('User created successfully!');
+            const url = `${SERVER_BASE_URL}/users/${id}`;
+            const response = await axios.put(url, user);
+            if (response.status === 200) {
+                alert('User updated successfully!');
                 navigate('/');
             }
         } catch (error) {
             console.error('Exception occurred in "handleSubmit" method. Error: ', error);
-            alert('Failed to create user!');
+            alert('Failed to update user!');
         }   
     };
+
+    // Fetch user data
+    const fetchUser = async () => {
+        try {
+            const url = `${SERVER_BASE_URL}/users/${id}`;
+            const response = await axios.get(url);
+            if (response && response.status === 200) {
+                const user = response.data.data;
+                setFormData({
+                    name: user.name,
+                    email: user.email,
+                    password: user.password,
+                    dob: user.dob
+                });
+
+                setDob(new Date(user.dob));
+            } else {
+                console.error('Failed to fetch user from server! Response:', response);
+            }
+        } catch (error) {
+            console.error('Failed to fetch user:', error);
+        }
+    };
+
+    // Use effect hooks
+    useEffect(() => {
+        if (!formData || !dob) {
+            fetchUser();
+        }
+    });
 
     return (
         <div className="container">
             <form className="form" onSubmit={handleSubmit}>
-                <h4>Create User</h4>
+                <h4>Edit User</h4>
                 <div className="form-group">
                     <label htmlFor="dobDatePicker">Name: </label>
                     <input
